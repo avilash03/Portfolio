@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Avilash Ravi</title>
+  <title>Hyperspace Effect</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
     html, body {
@@ -291,6 +291,30 @@
     .social-link:hover {
       opacity: 0.7;
     }
+  
+ .loader-container {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: none;
+    }
+
+    /* Updated loader style with transparent color */
+    .loader {
+      border: 16px solid transparent; /* Make the border transparent */
+      border-radius: 50%;
+      border-top: 16px solid #00FFFF; /* Neon blue shade */
+      border-bottom: 16px solid #00FFFF; /* Neon blue shade */
+      width: 120px;
+      height: 120px;
+      animation: spin 2s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
   </style>
 </head>
 <body>
@@ -335,45 +359,57 @@
       </a>
       <a class="social-link" href="https://github.com/avilash03" target="_blank">
         <i class="fab fa-github"></i>
+      </a>
       <a class="social-link" href="https://twitter.com/Avilash_Ravi" target="_blank">
         <i class="fab fa-twitter"></i>
+      </a>
       <a class="social-link" href="https://www.facebook.com/avilash.ravi/" target="_blank">
         <i class="fab fa-facebook"></i>
       </a>
     </div>
   </div>
-<audio src="https://dl.sndup.net/vhr3/X2Download%20(mp3cutnet).mp3" autoplay loop style="display:none;"></audio>
 
+  <!-- Loader -->
+  <div class="loader-container" id="loaderContainer">
+    <div class="loader"></div>
+  </div>
+
+  <audio src="https://dl.sndup.net/vhr3/X2Download%20(mp3cutnet).mp3" autoplay loop style="display:none;"></audio>
 
   <!-- Add your script here -->
-  <script>
-   const audioSourceURL = "https://dl.sndup.net/vhr3/X2Download%20(mp3cutnet).mp3";
+   <script>
+    const audioSourceURL = "https://dl.sndup.net/vhr3/X2Download%20(mp3cutnet).mp3";
+    const hudUISoundURL = "https://dl.sndup.net/kwps/Futuristic%20HUD-UI%20Visuals%20Sound%20Design.mp3";
 
-    // Create a new Audio object and set the source
     const audio = new Audio(audioSourceURL);
+    const hudUISound = new Audio(hudUISoundURL);
 
-    // Play the audio when the page is loaded
     audio.autoplay = true;
     audio.loop = true;
 
     function togglePurpleBox() {
       var purpleBox = document.getElementById("purpleBox");
-      var hoverButton = document.getElementById("hoverButton"); // Get the button element by ID
+      var loaderContainer = document.getElementById("loaderContainer");
+      var hoverButton = document.querySelector(".button"); // Get the button element
 
       if (purpleBox.classList.contains("show")) {
         purpleBox.classList.remove("show");
         purpleBox.classList.add("hide");
         setTimeout(function() {
           purpleBox.style.display = "none";
-        }, 1500); // Wait for the fade-out animation to complete before hiding the box
+        }, 1500);
       } else {
-        purpleBox.style.display = "block";
-        purpleBox.classList.remove("hide");
-        purpleBox.classList.add("show");
-      }
+        // Show loader
+        loaderContainer.style.display = "block";
 
-      // Hide the button after it's clicked
-      hoverButton.style.display = "none";
+        // Show purple box after 5 seconds
+        setTimeout(function() {
+          loaderContainer.style.display = "none"; // Hide loader
+          purpleBox.style.display = "block"; // Show purple box
+          purpleBox.classList.add("show"); // Play purple box animation
+          hudUISound.play(); // Play the HUD UI sound
+        }, 5000);
+      }
     }
 
     // Show profile image after the loading animation
