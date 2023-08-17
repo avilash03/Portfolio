@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Hyperspace Effect</title>
+  <title>Avilash Ravi</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
     html, body {
@@ -315,6 +315,36 @@
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
     }
+
+/* Click here text */
+.click-here-text {
+  font-family: 'Courier New', monospace;
+  font-size: 20px;
+  color: #FFFF00; 
+  animation: blink 1s infinite;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  position: absolute;
+  top: calc(50% + 60px); /* Adjust the position as needed */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+}
+
+@keyframes blink {
+  0%, 100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Apply the fade-in animation to the "Click here" text when the 'show' class is added */
+.click-here-text.show {
+  opacity: 1;
+  animation: fadeIn 0.5s ease-in-out;
+}
   </style>
 </head>
 <body>
@@ -338,8 +368,9 @@
   <!-- Hovering button -->
   <div class="button-container">
     <div class="button" onclick="togglePurpleBox()"></div>
+    
   </div>
-
+  <div class="click-here-text">Click to Activate</div>
   <!-- Purple box -->
   <div class="purple-box" id="purpleBox">
     <!-- Typewriter text -->
@@ -388,29 +419,42 @@
     audio.loop = true;
 
     function togglePurpleBox() {
-      var purpleBox = document.getElementById("purpleBox");
-      var loaderContainer = document.getElementById("loaderContainer");
-      var hoverButton = document.querySelector(".button"); // Get the button element
+  var purpleBox = document.getElementById("purpleBox");
+  var loaderContainer = document.getElementById("loaderContainer");
+  var hoverButton = document.querySelector(".button"); // Get the button element
+  var clickHereText = document.querySelector(".click-here-text"); // Get the "Click here" text element
 
-      if (purpleBox.classList.contains("show")) {
-        purpleBox.classList.remove("show");
-        purpleBox.classList.add("hide");
-        setTimeout(function() {
-          purpleBox.style.display = "none";
-        }, 1500);
-      } else {
-        // Show loader
-        loaderContainer.style.display = "block";
+  if (purpleBox.classList.contains("show")) {
+    purpleBox.classList.remove("show");
+    purpleBox.classList.add("hide");
+    clickHereText.style.opacity = 0; // Fade out the "Click here" text
+    setTimeout(function () {
+      purpleBox.style.display = "none";
+      clickHereText.style.opacity = 1; // Restore opacity
+    }, 1500);
+  } else {
+    // Show loader
+    loaderContainer.style.display = "block";
 
-        // Show purple box after 5 seconds
-        setTimeout(function() {
-          loaderContainer.style.display = "none"; // Hide loader
-          purpleBox.style.display = "block"; // Show purple box
-          purpleBox.classList.add("show"); // Play purple box animation
-          hudUISound.play(); // Play the HUD UI sound
-        }, 5000);
-      }
-    }
+    // Show purple box after 5 seconds
+    setTimeout(function () {
+      loaderContainer.style.display = "none"; // Hide loader
+      purpleBox.style.display = "block"; // Show purple box
+      purpleBox.classList.add("show"); // Play purple box animation
+      hudUISound.play(); // Play the HUD UI sound
+      clickHereText.style.opacity = 0; // Fade out the "Click here" text
+      setTimeout(function () {
+        clickHereText.style.opacity = 0; // Restore opacity
+        clickHereText.classList.add("show"); // Apply the blinking animation
+      }, 1000); // Adjust the duration as needed
+    }, 5000);
+  }
+}
+
+
+
+
+
 
     // Show profile image after the loading animation
     setTimeout(function() {
